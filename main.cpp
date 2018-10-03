@@ -3,25 +3,32 @@
 #include <ctype.h>
 #include <iostream>
 #include <windows.h>
-
 using namespace std;
+
+struct bloco
+{
+    int tag;
+    int tempo;
+    bool val;
+};
 
 int indice (int n, int tam) {
     return (n % tam);
 }
 
-void printar (unordered_map<int, int> cache[],int qtd_memoria, int tam, bool val[]) {
+void printar (unordered_map<int, bloco> cache[],int qtd_memoria, int tam) {
+    system("cls");
     for (int i = 0; i < qtd_memoria; i++){
-        cout << "Bloco\t\tValor\t\tValidade" << endl;
+        cout << "Bloco\tValor\tValidade" << endl;
         for (int j = 0; j < tam; j++){
-            printf("%2d   \t\t", j);
-            if (val[j] == true)
-                printf("%4d\t\t", cache[i][j]);
+            printf("%2d   \t", j);
+            if ( cache[i][j].val == true)
+                printf("%4d\t", cache[i][j].tag);
             else
-                cout << "null \t\t";
-            cout << val[j] << endl;
+                cout << "null \t";
+            cout << cache[i][j].val << endl;
         }
-        cout << "______________________________________________" << endl;
+        cout << "______________________________" << endl;
     }
 }
 
@@ -33,37 +40,42 @@ int main()
     cin >> tam;
     cout << "Quantas memorias voce tem: ";
     cin >> qtd_memoria;
-    bool validade[tam];
-    unordered_map<int, int> cache[qtd_memoria];
 
-    for (int i = 0; i < tam; i++)
-        validade[i] = false;
-    int n;
+    unordered_map<int, bloco> cache[qtd_memoria];
+    int endereco;
+    int tempo = 0;
+    system("cls");
     do {
-        system("cls");
-
-        printar (cache, qtd_memoria, tam, validade);
+        printar (cache, qtd_memoria, tam);
 
         cout << "Endereco para procurar:";
-        cin >> n;
+        cin >> endereco;
+        int mais_antigo = 99999;
+        int memo_to_change;
+        bool encontrado = false;
         for ( int i = 0; i < qtd_memoria; i++){
-            if ( n == cache[i][indice(n, tam)] && validade[indice(n, tam) == true])
-                cout << "acerto\n";
-            else {
-                cout << "O endereco nao foi encontrado\n";
-                cache[i][indice(n, tam)] = n;
-                validade[indice(n, tam)] = true;
+            if ( mais_antigo > cache[i][indice(endereco, tam)].tempo ){
+                mais_antigo =cache[i][indice(endereco, tam)].tempo;
+                memo_to_change = i;
+            }
+            if ( endereco == cache[i][indice(endereco, tam)].tag ) {
+                if ( cache[i][indice(endereco, tam)].val == true ){
+                    cache[i][indice(endereco, tam)].tempo = tempo;
+                    cout << "Acerto\n";
+                    encontrado = true;
+                }
+                else
+                    cout << "Vencido\n";
             }
         }
-
-//        cout << "Sair?(S/N)\n";
-//        char aux;
-//        cin >> aux;
-//        if ( aux == 'S' || aux == 's')
-//            break;
-//        else
-            //continue;
+        if ( encontrado == false ) {
+            cout << "O endereco nao foi encontrado\n";
+            cache[memo_to_change][indice(endereco, tam)].tag = endereco;
+            cache[memo_to_change][indice(endereco, tam)].tempo = tempo;
+            cache[memo_to_change][indice(endereco, tam)].val = true;
+        }
         Sleep (750);
+        tempo++;
     } while (true);
     return 0;
 }
