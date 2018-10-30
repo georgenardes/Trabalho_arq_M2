@@ -8,7 +8,7 @@
 
 using namespace std;
 #define ENDERECO 32
-#define PALAVRA 1
+#define PALAVRA 4
 
 
 struct bloco {
@@ -21,20 +21,18 @@ int indice (int n, int tam) {
     return (n % tam);
 }
 
-void printar (unordered_map<int, bloco> cache[],int grau_asso, int qtd_bloco) {
-    //system("cls");
-    system("clear");
+void printar (unordered_map<int, bloco> cache[],int grau_asso, int qtd_bloco, int tempo) {
+    system("cls");
+    //system("clear");
     for (int i = 0; i < grau_asso; i++){
-        cout << "Bloco\tValor\tValidade\tTempo" << endl;
+        cout << "Bloco\tValor\tValidade\tTempo";
         for (int j = 0; j < qtd_bloco; j++){
-            printf("%2d   \t", j);
-            //if ( cache[i][j].val == true)
-                printf("%4d\t", cache[i][j].tag);
-            //else
-               // cout << "null \t";
+            printf("\n%2d   \t", j);
+            printf("%4d\t", cache[i][j].tag);
             cout << cache[i][j].val << "\t\t";
-            cout << cache[i][j].tempo << endl;
+            cout << cache[i][j].tempo;
         }
+		cout << "\t\tTempo atual: " << tempo <<endl;
         cout << "---------------------------------" << endl;
     }
 }
@@ -77,22 +75,22 @@ int main()
 
     /* Mostra a formula do custo de tag */
     cout << grau_asso << " * ";
-    cout << qtd_bloco << " * (";
+    cout << pow (2, num_exp(qtd_bloco)) << " * (";
     cout << ENDERECO << " - (";
     cout << num_exp(qtd_bloco) << " + ";
-    cout << num_exp(PALAVRA) << " + 2) + 1)\n\n";
+    cout << num_exp(PALAVRA) << " + 2))\n\n";
 
     /* Faz o calculo do custo em bit para as tags */
-    custo_bit = grau_asso * pow (2, num_exp(qtd_bloco)) * ( ENDERECO - num_exp(qtd_bloco) - num_exp(PALAVRA) - 2 + 1)  ;
+    custo_bit = grau_asso * pow (2, num_exp(qtd_bloco)) * ( ENDERECO - num_exp(qtd_bloco) - num_exp(PALAVRA) - 2)  ;
     cout << "Custo em bits = "<<custo_bit << endl;
     cout << "enter para prosseguir ";
     getch();
 
-    //system("cls");
-    system("clear");
+    system("cls");
+    //system("clear");
     do {
         /* Chamada de função para mostrar o estado da cache */
-        printar (cache, grau_asso, qtd_bloco);
+        printar (cache, grau_asso, qtd_bloco, tempo);
 
         char op;
         cout << "Digite 'p' para procurar um endereco ou 'i' para invalidar um bloco: ";
@@ -100,7 +98,7 @@ int main()
 
         if (op == 'p') {
             int endereco;
-            int mais_antigo = 99999;
+            int mais_antigo = cache[0][0].tempo;
             int memo_to_change = 0;
             bool encontrado = false;
 
@@ -169,8 +167,10 @@ int main()
             cin >> num_via;
             cache[num_via][indice(num_bloco, qtd_bloco)].val = false;
         }
-        else
-            system("clear");
+        else {
+            system("cls");
+            //system("clear");
+        }
     } while (true);
 
     return 0;
