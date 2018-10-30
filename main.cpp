@@ -32,7 +32,7 @@ void printar (unordered_map<int, bloco> cache[],int grau_asso, int qtd_bloco, in
             cout << cache[i][j].val << "\t\t";
             cout << cache[i][j].tempo;
         }
-		cout << "\t\tTempo atual: " << tempo <<endl;
+        cout << "\t\tTempo atual: " << tempo <<endl;
         cout << "---------------------------------" << endl;
     }
 }
@@ -56,10 +56,29 @@ int main()
     int custo_bit = 0;
     int tempo = 1;
 
-    cout << "Quantos blocos tem a sua memoria: ";
-    cin >> qtd_bloco;
-    cout << "Qual o grau de associatividade: ";
-    cin >> grau_asso;
+    do{
+        cout << "Quantos blocos tem a sua memoria: ";
+        cin >> qtd_bloco;
+        while (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
+            cout << "Digite um numero por favor\n";
+            cin >> qtd_bloco;
+        }
+    }while (qtd_bloco <= 0 || qtd_bloco % 2 != 0);
+
+    do{
+        cout << "Qual o grau de associatividade: ";
+        cin >> grau_asso;
+        while (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
+            cout << "Digite um numero por favor\n";
+            cin >> grau_asso;
+        }
+    }while (grau_asso <= 0);
 
     /* Quantidade de bloco passa a ser quantidade de bloco por via */
     qtd_bloco = qtd_bloco/grau_asso;
@@ -98,12 +117,21 @@ int main()
 
         if (op == 'p') {
             int endereco;
-            int mais_antigo = cache[0][0].tempo;
+            int mais_antigo = 99999;
             int memo_to_change = 0;
             bool encontrado = false;
 
-            cout << "Endereco para procurar:";
-            cin >> endereco;
+            do{
+                cout << "Endereco para procurar:";
+                cin >> endereco;
+                while (cin.fail())
+                {
+                    cin.clear();
+                    cin.ignore(INT_MAX, '\n');
+                    cout << "Digite um numero por favor\n";
+                    cin >> endereco;
+                }
+            }while (endereco <= 0);
 
             /* Dado o endereço para pesquisar, é iniciado a busca na cache *
              * analisando a tag somente dos blocos com bit de validade em 1*/
@@ -155,7 +183,7 @@ int main()
                 cache[memo_to_change][indice(endereco, qtd_bloco)].val = true;
             }
             //Sleep (750);
-            sleep(1);
+            sleep(3);
             tempo++;
         }
         else if (op == 'i') {
