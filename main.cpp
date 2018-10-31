@@ -9,7 +9,7 @@
 using namespace std;
 #define ENDERECO 32
 #define PALAVRA 4
-
+#define INT_MAX INTMAX_MAX
 
 struct bloco {
     int tag;
@@ -57,6 +57,7 @@ int main()
     int tempo = 1;
 
     do{
+
         cout << "Quantos blocos tem a sua memoria: ";
         cin >> qtd_bloco;
         while (cin.fail())
@@ -78,7 +79,7 @@ int main()
             cout << "Digite um numero por favor\n";
             cin >> grau_asso;
         }
-    }while (grau_asso <= 0);
+    }while (grau_asso <= 0 || qtd_bloco%grau_asso != 0.0 );
 
     /* Quantidade de bloco passa a ser quantidade de bloco por via */
     qtd_bloco = qtd_bloco/grau_asso;
