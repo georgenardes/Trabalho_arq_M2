@@ -1,2 +1,2 @@
 # Trabalho_arq_M2
-Trabalho de acesso à memória cache
+Trabalho visando o estudo do processo de acesso à memória cache.
